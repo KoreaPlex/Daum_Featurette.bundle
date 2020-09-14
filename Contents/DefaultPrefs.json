@@ -1,0 +1,14 @@
+[
+  {
+    "id": "server_url",
+    "label": "discord내에서 뿌려주는 서버 주소",
+    "type": "text",
+    "default": ""
+  },
+  {
+    "id": "apikey",
+    "label": "발급받은 API KEY.",
+    "type": "text",
+    "default": ""
+  }
+]
