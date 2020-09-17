@@ -24,6 +24,30 @@ EXTRA_TYPE_MAP = {'primary_trailer' : TrailerObject,
                   'behind_the_scenes' : BehindTheScenesObject,
                   'scene_or_sample' : SceneOrSampleObject}
 
+EXTRA_TYPE_MAP = {'trailer' : TrailerObject,
+                'deleted' : DeletedSceneObject,
+                'behindthescenes' : BehindTheScenesObject,
+                'behind_the_scenes' : BehindTheScenesObject,
+                'interview' : InterviewObject,
+                'scene' : SceneOrSampleObject,
+                'featurette' : FeaturetteObject,
+                'short' : ShortObject,
+                'other' : OtherObject,
+                'extra' : OtherObject,
+                'scene_or_sample' :SceneOrSampleObject }
+
+def make_style(text):
+  if text.count('인터뷰') > 0 : return 'interview' # 2
+  if text.count('티저') > 0 : return 'trailer' # 1
+  if text.count('스페셜') > 0 : return 'behind_the_scenes'
+  if text.count('예고') > 0 : return 'trailer' # 1
+  if text.count('삭제') > 0: return 'deleted'  # 2
+  if text.count('부가') > 0: return 'featurette'  # 2
+  if text.lower().count('m/v') > 0: return 'featurette' # 장면
+  if text.lower().count('mv') > 0: return 'featurette'  # 장면
+  if text.lower().count('ost') > 0: return 'featurette'  # 장면
+  if text.lower().count('soundtrack') > 0: return 'scene_or_sample'  # 장면
+  return 'scene_or_sample' # 메이킹
 
 def scrub_extra(extra, media_title):
   e = extra['extra']
@@ -41,16 +65,6 @@ def scrub_extra(extra, media_title):
 
   return extra
 
-def make_style(text):
-  if text.count('인터뷰') > 0 : return 'interview' # 2
-  if text.count('티저') > 0 : return 'trailer' # 1
-  if text.count('스페셜') > 0 : return 'behind_the_scenes'
-  if text.count('예고') > 0 : return 'trailer' # 1
-  if text.lower().count('m/v') > 0: return 'scene_or_sample' # 장면
-  if text.lower().count('mv') > 0: return 'scene_or_sample'  # 장면
-  if text.lower().count('ost') > 0: return 'scene_or_sample'  # 장면
-  if text.lower().count('soundtrack') > 0: return 'scene_or_sample'  # 장면
-  return 'behind_the_scenes' # 메이킹
 
 class DaumFeaturette(Agent.TV_Shows):
   name = 'Daum 부가영상'
@@ -95,7 +109,7 @@ class DaumFeaturette(Agent.TV_Shows):
                            thumb= thumb)})
       for extra in tmp:
         style = make_style(extra['title'])
-        if style == "interview":
+        if style in ["interview",'deleted','featurette' ]:
           try:thumb = extra['thumb']
           except:thumb= ""
           extras.append({'type': EXTRA_TYPE_MAP[style],
@@ -108,7 +122,7 @@ class DaumFeaturette(Agent.TV_Shows):
                            thumb= thumb)})
       for extra in tmp:
         style = make_style(extra['title'])
-        if style == "behind_the_scenes":
+        if style not in ["trailer" , "interview",'deleted','featurette' ]:
           try:thumb = extra['thumb']
           except:thumb= ""
           extras.append({'type': EXTRA_TYPE_MAP[style],
