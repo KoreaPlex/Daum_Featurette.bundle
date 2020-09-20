@@ -1,7 +1,7 @@
 [
   {
     "id": "server_url",
-    "label": "discord내에서 뿌려주는 서버 주소",
+    "label": "서버 주소",
     "type": "text",
     "default": ""
   },
@@ -10,5 +10,12 @@
     "label": "발급받은 API KEY.",
     "type": "text",
     "default": ""
+  },
+  {
+      "id": "trailer_location",
+      "label": "부가영상을 CDN에서 받아올지 프록시 서버에서 받아올지.",
+      "type": "enum",
+      "values": ["Proxy","CDN"],
+      "default": "Proxy"
   }
 ]

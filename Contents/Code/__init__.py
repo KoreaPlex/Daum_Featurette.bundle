@@ -96,6 +96,10 @@ class DaumFeaturette(Agent.TV_Shows):
     if tmp:
       for extra in tmp:
         style = make_style(extra['title'])
+        if Prefs['trailer_location'] == 'Proxy':
+            tmpurl = extra['attachments']['proxy_url']
+        elif Prefs['trailer_location'] == "CDN":
+            tmpurl = extra['attachments']['url']
         if style == "trailer":
           try:thumb = extra['thumb']
           except:thumb= ""
@@ -103,7 +107,7 @@ class DaumFeaturette(Agent.TV_Shows):
                          'lang': 'ko',
                          'extra': EXTRA_TYPE_MAP[style](
                            #url='k_movie://cdn.discordapp.com/attachments/750218451540377601/751781342978769026/1599140046.015252.mp4',
-                           url='k_movie://' + extra['attachments']['url'].replace('https://', ''),
+                           url='k_movie://' + tmpurl.replace('https://', ''),
                            title=extra['title'].strip(),
                            #originally_available_at=avail,
                            thumb= thumb)})
@@ -116,7 +120,7 @@ class DaumFeaturette(Agent.TV_Shows):
                          'lang': 'ko',
                          'extra': EXTRA_TYPE_MAP[style](
                            #url='k_movie://cdn.discordapp.com/attachments/750218451540377601/751781342978769026/1599140046.015252.mp4',
-                           url='k_movie://' + extra['attachments']['url'].replace('https://', ''),
+                           url='k_movie://' + tmpurl.replace('https://', ''),
                            title=extra['title'].strip(),
                            #originally_available_at=avail,
                            thumb= thumb)})
