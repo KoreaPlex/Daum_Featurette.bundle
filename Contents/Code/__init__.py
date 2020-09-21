@@ -18,11 +18,6 @@ def Start():
 
 
 TYPE_ORDER = ['primary_trailer', 'trailer', 'behind_the_scenes', 'interview', 'scene_or_sample']
-EXTRA_TYPE_MAP = {'primary_trailer' : TrailerObject,
-                  'trailer' : TrailerObject,
-                  'interview' : InterviewObject,
-                  'behind_the_scenes' : BehindTheScenesObject,
-                  'scene_or_sample' : SceneOrSampleObject}
 
 EXTRA_TYPE_MAP = {'trailer' : TrailerObject,
                 'deleted' : DeletedSceneObject,
@@ -128,13 +123,15 @@ class DaumFeaturette(Agent.TV_Shows):
                            title=extra['title'].strip(),
                            #originally_available_at=avail,
                            thumb= thumb)})
+
+
       for extra in tmp:
         style = make_style(extra['title'])
         if Prefs['trailer_location'] == 'Proxy':
             tmpurl = extra['attachments']['proxy_url']
         elif Prefs['trailer_location'] == "CDN":
             tmpurl = extra['attachments']['url']
-        if style not in ["trailer" , "interview",'deleted','featurette' ]:
+        if style not in ["trailer" , "interview",'deleted','featurette' , 'scene_or_sample' ]:
           try:thumb = extra['thumb']
           except:thumb= ""
           extras.append({'type': EXTRA_TYPE_MAP[style],
